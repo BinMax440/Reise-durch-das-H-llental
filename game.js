@@ -44,12 +44,16 @@ function create() {
     // Spieler hinzufügen
     player = this.physics.add.sprite(100, 300, 'player');
     player.setCollideWorldBounds(true);
+    player.setScale(0.5); // Spieler skalieren
 
     // Hindernisse hinzufügen
     obstacles = this.physics.add.group({
         key: 'obstacle',
         repeat: 5,
         setXY: { x: 200, y: 100, stepX: 120 }
+    });
+    obstacles.children.iterate(function (child) {
+        child.setScale(0.5); // Hindernisse skalieren
     });
 
     // Timer-Text hinzufügen
