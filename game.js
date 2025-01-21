@@ -1,10 +1,9 @@
-// Simple 2D Adventure Game: Ritter Kuno's Journey
-
-// Basic setup for Phaser.js framework
+// Konfiguration für Phaser.js
 const config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    parent: 'game-container',
     physics: {
         default: 'arcade',
         arcade: {
@@ -21,50 +20,45 @@ const config = {
 
 const game = new Phaser.Game(config);
 
-// Global variables for the game
-let player, cursors, greif, obstacles, timerText, timer;
-let remainingTime = 120; // 2 minutes to complete the game
+let player, cursors, obstacles, timerText;
+let remainingTime = 120; // 2 Minuten
 
 function preload() {
-    // Load assets
-    this.load.image('background', 'assets/background.png'); // Add a simple forest image
-    this.load.image('player', 'assets/ritter_kuno.png'); // Sprite for the player
-    this.load.image('greif', 'assets/greif.png'); // Sprite for the Greif
-    this.load.image('obstacle', 'assets/rock.png'); // Obstacles like rocks
+    // Platzhalter-Assets laden
+    this.load.image('background', 'https://via.placeholder.com/800x600?text=Hintergrund');
+    this.load.image('player', 'https://via.placeholder.com/50x50?text=Kuno');
+    this.load.image('obstacle', 'https://via.placeholder.com/50x50?text=Hindernis');
 }
 
 function create() {
-    // Add background
+    // Hintergrund hinzufügen
     this.add.image(400, 300, 'background');
 
-    // Add player sprite
+    // Spieler hinzufügen
     player = this.physics.add.sprite(100, 300, 'player');
     player.setCollideWorldBounds(true);
 
-    // Add Greif sprite
-    greif = this.physics.add.sprite(200, 100, 'greif');
-
-    // Add obstacles
+    // Hindernisse hinzufügen
     obstacles = this.physics.add.group({
         key: 'obstacle',
         repeat: 5,
-        setXY: { x: 150, y: 150, stepX: 100 }
+        setXY: { x: 200, y: 100, stepX: 120 }
     });
 
-    // Add timer text
-    timerText = this.add.text(16, 16, `Time: ${remainingTime}s`, {
+    // Timer-Text hinzufügen
+    timerText = this.add.text(16, 16, `Zeit: ${remainingTime}s`, {
         fontSize: '24px',
         fill: '#ffffff'
     });
 
-    // Enable collision between player and obstacles
+    // Kollisionen zwischen Spieler und Hindernissen
     this.physics.add.collider(player, obstacles, hitObstacle, null, this);
 
-    // Input handling
+    // Eingabesteuerung hinzufügen
     cursors = this.input.keyboard.createCursorKeys();
 
-    // Timer countdown
-    timer = this.time.addEvent({
+    // Timer-Countdown
+    this.time.addEvent({
         delay: 1000,
         callback: updateTimer,
         callbackScope: this,
@@ -73,7 +67,7 @@ function create() {
 }
 
 function update() {
-    // Player movement
+    // Bewegung des Spielers
     player.setVelocity(0);
 
     if (cursors.left.isDown) {
@@ -88,9 +82,9 @@ function update() {
         player.setVelocityY(150);
     }
 
-    // Check if time runs out
+    // Spielende, wenn die Zeit abläuft
     if (remainingTime <= 0) {
-        this.add.text(300, 250, 'Game Over', {
+        this.add.text(300, 250, 'Spiel vorbei!', {
             fontSize: '48px',
             fill: '#ff0000'
         });
@@ -100,10 +94,10 @@ function update() {
 
 function updateTimer() {
     remainingTime--;
-    timerText.setText(`Time: ${remainingTime}s`);
+    timerText.setText(`Zeit: ${remainingTime}s`);
 }
 
 function hitObstacle(player, obstacle) {
     obstacle.disableBody(true, true);
-    remainingTime -= 10; // Penalty for hitting an obstacle
+    remainingTime -= 10; // 10 Sekunden Strafe
 }
