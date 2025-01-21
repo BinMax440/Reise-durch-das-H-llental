@@ -1,4 +1,4 @@
-// Konfiguration für Phaser.js
+// Phaser-Konfiguration
 const config = {
     type: Phaser.AUTO,
     width: 800,
@@ -23,11 +23,18 @@ const game = new Phaser.Game(config);
 let player, cursors, obstacles, timerText;
 let remainingTime = 120; // 2 Minuten
 
+// Eigene Bilder hier einfügen:
+const ASSETS = {
+    background: 'assets/background.png', // Hintergrundbild
+    player: 'assets/ritter_kuno.png',    // Bild für den Spieler
+    obstacle: 'assets/rock.png'         // Bild für Hindernisse
+};
+
 function preload() {
-    // Platzhalter-Assets laden
-    this.load.image('background', 'https://via.placeholder.com/800x600?text=Hintergrund');
-    this.load.image('player', 'https://via.placeholder.com/50x50?text=Kuno');
-    this.load.image('obstacle', 'https://via.placeholder.com/50x50?text=Hindernis');
+    // Eigene Bilder laden
+    this.load.image('background', ASSETS.background);
+    this.load.image('player', ASSETS.player);
+    this.load.image('obstacle', ASSETS.obstacle);
 }
 
 function create() {
